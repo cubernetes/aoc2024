@@ -6,6 +6,7 @@ data = open(0).read().strip().splitlines()
 t = 0
 for line in data:
     nums = list(map(int, line.split()))
+    safe = False
     for i, num in e([-1] + nums):
         nums_copy = nums[:]
         if num != -1:
