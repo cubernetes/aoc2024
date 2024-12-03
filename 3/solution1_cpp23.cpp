@@ -9,7 +9,7 @@ using namespace std;
 int main() {
 	ifstream file("in.txt");
 	string line;
-	regex rx("mul\\((\\d+),(\\d+)\\)");
+	regex rx("mul\\((\\d{1,3}),(\\d{1,3})\\)");
 	int sum(0);
 
 	while (getline(file, line)) {
