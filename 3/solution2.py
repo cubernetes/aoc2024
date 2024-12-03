@@ -5,7 +5,7 @@ data = open(0).read().strip()
 
 t = 0
 flag = True
-for match in re.finditer(r'(mul\(\d+,\d+\))|(do\(\))|don\'t\(\)', data):
+for match in re.finditer(r'(mul\(\d{1,3},\d{1,3}\))|(do\(\))|don\'t\(\)', data):
     m = match.group(0)
     if m == "don't()":
         flag = False
