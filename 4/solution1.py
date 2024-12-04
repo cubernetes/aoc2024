@@ -29,7 +29,6 @@ t = 0
 
 # worst approach lol
 
-# left to right
 for line in data                                 + \
             mirror(data)                         + \
             transpose(data)                      + \
