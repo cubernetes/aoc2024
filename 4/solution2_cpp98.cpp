@@ -25,8 +25,8 @@ int main() {
 	while (getline(file, line))
 		grid.push_back(line);
 
-	for (int i = 0; i < static_cast<int>(grid.size()); ++i)
-		for (int j = 0; j < static_cast<int>(grid[i].size()); ++j)
+	for (int i = 0; i < (int)grid.size(); ++i)
+		for (int j = 0; j < (int)grid[i].size(); ++j)
 			total += find_x_mas(grid, i, j);
 	cout << total << '\n';
 	return 0;
