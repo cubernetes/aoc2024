@@ -10,7 +10,7 @@ int main() {
 	ifstream file("in.txt");
 	string line;
 	regex rx("mul\\((\\d{1,3}),(\\d{1,3})\\)|don't\\(\\)|do\\(\\)");
-	int sum(0);
+	int sum{};
 	bool do_state(true);
 
 	while (getline(file, line)) {

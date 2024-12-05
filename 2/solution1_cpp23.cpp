@@ -11,7 +11,7 @@ using namespace std;
 int main() {
 	ifstream file("in.txt");
 	string line;
-	int n_safe(0);
+	int n_safe{};
 
 	while (getline(file, line)) {
 		if (line.empty())

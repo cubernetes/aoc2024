@@ -10,7 +10,7 @@ int main() {
 	ifstream file("in.txt");
 	string line;
 	regex rx("mul\\((\\d{1,3}),(\\d{1,3})\\)");
-	int sum(0);
+	int sum{};
 
 	while (getline(file, line)) {
 		auto matches_begin = sregex_iterator(line.begin(), line.end(), rx);
