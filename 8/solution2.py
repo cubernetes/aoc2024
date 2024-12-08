@@ -1,4 +1,5 @@
 #!/usr/bin/env pypy3
+# not using gcd lol still works thanks eric
 import itertools
 full_grid=list(map(list,open(0).read().splitlines()))
 distincts=set()
