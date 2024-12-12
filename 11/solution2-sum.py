@@ -3,7 +3,7 @@ from functools import lru_cache
 @lru_cache(200000)
 def recurse(stone: str, depth: int) -> int:
     if depth == 0:
-        return 1
+        return int(stone)
     elif stone == '0':
         return recurse('1', depth - 1)
     elif len(stone) % 2 == 0:
