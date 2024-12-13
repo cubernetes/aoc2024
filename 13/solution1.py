@@ -1,13 +1,10 @@
 #!/usr/bin/env pypy3
 
-import itertools as it
-
 machines = open(0).read().split("\n\n")
 
 def bruh_idk_itertools(A,B):
     for a in range(A):
-        for b in range(B):
-            yield a,b
+        for b in range(B): yield a,b
 
 def min_btn_presses(bax, bay, bbx, bby, px, py):
     for a, b in sorted(bruh_idk_itertools(100, 100), key=lambda tup: sum(tup)):

@@ -25,7 +25,7 @@ def min_btn_presses(bax, bay, bbx, bby, px, py):
         return 0
     b = (px * bay - bax * py) / denom
     a = (py - bby * b) / bay
-    if int(a) == a and int(b) == b:
+    if int(a) == a and int(b) == b: # this IS the minimum, since it's the only solution
         return int(a*3+b)
     return 0
 
