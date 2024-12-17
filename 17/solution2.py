@@ -73,7 +73,7 @@ def get_sequence(a: int) -> list[int]:
         except RuntimeError:
             return out
 
-def brute_force(a) -> int:
+def dfs(a) -> int:
     for i in range(8):
         seq = get_sequence(a + i)[::-1]
         prefix=','.join(map(str, seq))
@@ -81,11 +81,11 @@ def brute_force(a) -> int:
         prefix_match = entire_program.startswith(prefix)
         if not prefix_match:
             continue
-        brute_force((a + i) * 8)
+        dfs((a + i) * 8)
     print("Done")
     print("Value of A is        ", a // 8)
     print("Generated sequence is", prefix[:-2])
     print("Program is           ", entire_program)
     raise SystemExit(1)
 
-print(brute_force(0))
+print(dfs(0))
