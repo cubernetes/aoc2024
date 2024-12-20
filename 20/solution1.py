@@ -66,7 +66,7 @@ def find_cheats(i,j,seen,cheats,seen_internal={}):
                 continue
             if g[ni][nj] == '#':
                 if 0 <= ni+di < len(g) and 0 <= nj+dj < len(g[0]):
-                    if g[ni+di][nj+dj] in '.E' and (ni+di,nj+dj) not in seen_internal:
+                    if g[ni+di][nj+dj] in '.E' and (ni+di,nj+dj) not in seen_internal: # technically not correct, you can also go in diagonals
                         cheats[((ni,nj),(ni+di,nj+dj))] = get_savings(ni+di,nj+dj,seen,seen[(i,j)])
                 continue
             elif (ni,nj) in seen_internal:
