@@ -22,9 +22,9 @@ for keypad,padpaths in ((numpad,numpaths),(dirpad,dirpaths)):
                         if p+(dir2,) not in padpaths[s,nc]:
                             padpaths[s,nc].append(p+(dir2,))
                     q.append(nc)
-def robo(c,pad_type):
-    pad,paths=(numpad,numpaths) if pad_type==0 else (dirpad,dirpaths)
-    for s,e in zip((10,)+c,c):
-        print(paths[s,e])
-for c in open(0):
-    robo(tuple(int(x,16) for x in c.strip()),0)
+def robo(c,n,d=-1,cache={}):
+    if d==-1: d=n
+    if (c,d) in cache: return cache[c,d]
+    cache[c,d]=len(c) if d==0 else sum(min(robo(p+(10,),n,d-1,cache) for p in (numpaths if d==n else dirpaths)[s,e]) for s,e in zip((10,)+c,c))
+    return cache[c,d]
+print(sum(int(c[:-2]) * robo(tuple(int(x,16) for x in c[:-1]),26) for c in open(0)))
