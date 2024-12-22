@@ -27,4 +27,4 @@ def robo(c,n,d=-1,cache={}):
     if (c,d) in cache: return cache[c,d]
     cache[c,d]=len(c) if d==0 else sum(min(robo(p+(10,),n,d-1,cache) for p in (numpaths if d==n else dirpaths)[s,e]) for s,e in zip((10,)+c,c))
     return cache[c,d]
-print(sum(int(c[:-2]) * robo(tuple(int(x,16) for x in c[:-1]),26) for c in open(0)))
+print(sum(int(c[:-2]) * robo(tuple(int(x,16) for x in c[:-1]),3) for c in open(0)))
