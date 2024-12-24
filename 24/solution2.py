@@ -1,13 +1,12 @@
-#!/usr/bin/env pypy3
+#!/usr/bin/env python3
 
 from copy import deepcopy
 import re
 from functools import cache
 from pprint import pprint
-import sys
 from z3 import *
 
-rawwires,rawgates=open(sys.argv[1]).read().split('\n\n')
+rawwires,rawgates=open(0).read().split('\n\n')
 
 def color_decls(decl: str) -> str:
     if decl=='Xor':
@@ -21,6 +20,7 @@ def color_decls(decl: str) -> str:
 
 def highlight_decls(expr: str) -> str:
     return re.sub(r'\bAnd\b', color_decls('And'), re.sub(r'\bOr\b', color_decls('Or'), re.sub(r'\bXor\b', color_decls('Xor'), expr)))
+
 def canon_str(expr, *, indent=' ', nl=True, d=0):
     children=expr.children()
     if not children:
@@ -93,11 +93,6 @@ def highest_gate(expr):
     for boolvar in re.finditer(r'[xy]\d\d', expr):
         max_var_idx=max(int(boolvar[0][1:]), max_var_idx)
     return max_var_idx
-#for gate in gates:
-#    if gate[0] in 'z':
-#        print(gate, highest_gate(gates[gate][1]))
-
-#pprint(gates)
 z_gates=[]
 def update_z_gates():
     global z_gates
@@ -107,7 +102,6 @@ def update_z_gates():
             z_gates.append((gate,gates[gate][1]))
     z_gates.sort()
 update_z_gates()
-#print(json.dumps(z_gates, indent=4))
 
 @cache
 def gen_carry_z3(n):
@@ -142,22 +136,13 @@ def find_invalid_gate():
             # print('error', gate)
             return i
     return -1
+
 def swap_outputs(i,j):
     z1=f'z{i:02}'
     z2=f'z{j:02}'
     gates[z1],gates[z2]=gates[z2],gates[z1]
     update_z_gates()
-#swaps=[]
-#err_z = find_invalid_gate()
-#print('invalid gate', err_z)
-#for i in range(err_z+1, 46):
-#    swap_outputs(err_z, i)
-#    new_err_z = find_invalid_gate()
-#    if new_err_z == err_z:
-#        swap_outputs(err_z, i)
-#        continue
-#    swaps.append((err_z,i))
-#print(swaps)
+
 def eq_same(a,b):
     s=Solver()
     s.add(Not(a==b))
@@ -177,6 +162,20 @@ def find_invalid_gates():
             print('error', gate)
             print('compared', eq)
             print('and', eq2)
+
+#pprint(gates)
+#swaps=[]
+#err_z = find_invalid_gate()
+#print('invalid gate', err_z)
+#for i in range(err_z+1, 46):
+#    swap_outputs(err_z, i)
+#    new_err_z = find_invalid_gate()
+#    if new_err_z == err_z:
+#        swap_outputs(err_z, i)
+#        continue
+#    swaps.append((err_z,i))
+#print(swaps)
+
 #print(find_invalid_gate())
 #a=eval(gates['z11'][1])
 #b=eval(gen_adder_z3(11))
@@ -203,8 +202,6 @@ def find_invalid_gates():
 #print(end=' '); print(bin(b)[2:])
 #print(bin(a+b)[2:])
 
-# z11
-
 #raise SystemExit(0)
 gates=dict(sorted(gates.items()))
 for gate in gates:
@@ -215,3 +212,21 @@ for gate in gates:
     print()
 
 # solved it by hand lol
+# using less -SR and tmux (for copying from the terminal)
+# Approach was to print a canonicalzed one-line representation of each output (z*, but also all other intermediary outputs)
+# in complete terms of x* and y* inputs.
+# Then, generate the canonicalized full-adder for each bit, again, in terms of x and y inputs.
+# Since it's canonicalized, you can easily compare the represenations of each bit with the full-adder representation.
+# If the bit is correct, meaning its logically equivalent the the full-adder, then we can skip it.
+# If it's not correct, then we must perform a swap. But with what? That's a bit tricky, and that's the part I solved with
+# trial and error. I copied the canonicalized full-adder represenation, escaped it, and searched in the less(1) buffer for it.
+# I'd then probably find that represenation somehwhere as the represenation of a random output bit, sth like this:
+# ...
+# btx: <correct expression for 11th bit>
+# ...
+# z11:      <wrong expression for 11th bit>
+# z11-full: <corrrect expression for 11th bit>
+# ...
+# As you see, I would find the btx output. I'd then swap the btx with z11 outputs, and it would work!
+# But it doesn't work when only part of z11 is incorrect. As it was for the 15th bit, in which the final
+# output bit was not involved in any swap. I guess I was just lucky I hadn't dig too deep.
